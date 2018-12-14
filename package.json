@@ -1,0 +1,22 @@
+{
+  "name": "aws-serverless-jwt",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "scripts": {
+    "offline": "sls offline start --skipCacheInvalidation"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bcryptjs-then": "^1.0.1",
+    "jsonwebtoken": "^8.2.1",
+    "aws-sdk": "^2.372.0",
+    "md5": "^2.2.1"
+  },
+  "devDependencies": {
+    "serverless-offline": "^3.20.1"
+  }
+}
