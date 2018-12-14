@@ -8,6 +8,9 @@ custom:
     start:
       migrate: true
 
+package:
+  exclude:
+    - ".dynamodb/**"
 
 provider:
   name: aws

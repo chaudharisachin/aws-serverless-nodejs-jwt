@@ -13,8 +13,7 @@
     "bcryptjs-then": "^1.0.1",
     "jsonwebtoken": "^8.2.1",
     "aws-sdk": "^2.372.0",
-    "md5": "^2.2.1",
-    "serverless-http": "^1.8.0"
+    "md5": "^2.2.1"
   },
   "devDependencies": {
     "serverless-dynamodb-local": "^0.2.35",

@@ -35,8 +35,7 @@ module.exports.auth = (event, context, callback) => {
 
   if (!token) {
     console.log("[VerifyToken.auth] missing token -> request Unauthorized");
-    // return callback(null, 'Unauthorized');
-    return callback(new Error('[401] You are not authorized to access this resource without credentials'));
+    return callback('Unauthorized'); //by default APIGateway will return 401 with body "Unauthorized"
   }
 
   // verifies secret and checks exp
@@ -44,8 +43,7 @@ module.exports.auth = (event, context, callback) => {
     console.log("[VerifyToken.auth] verify token ...");
     if (err) {
       console.log("[VerifyToken.auth] verify token failed:", err);
-      // return callback(null, 'Unauthorized');
-      return callback(new Error('[401] You are not authorized to access this resource'));
+      return callback('Unauthorized');
     }
 
     // if everything is good, save to request for use in other routes
