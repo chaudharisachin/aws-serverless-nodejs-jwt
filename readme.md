@@ -8,3 +8,13 @@ A short and easy boilerplate showcasing JWT auth with Nodejs, the Serverless fra
 
 
 *Note: The concept of middlewares can be applied to this for understanding it easily.*
+
+# Usage
+
+Offline:
+- sls dynamodb install
+- npm run offline
+
+AWS Live:
+- sls deploy
+- check AWS API URLs to hit
