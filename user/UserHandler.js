@@ -23,10 +23,9 @@ module.exports.getUser = (event, context) => {
   console.log('[UserHandler.getUser] Received event:', JSON.stringify(event, null, 2));
   context.callbackWaitsForEmptyEventLoop = false;
   return database.getUserById(event.pathParameters.id)
-    .then(user => ({
-      statusCode: 200,
-      body: JSON.stringify(user)
-    }))
+    .then(user =>
+      !user ? ({statusCode: 404}) : ({statusCode: 200, body: JSON.stringify(user)})
+    )
     .catch(err => {
       console.log("ERROR [UserHandler.getUser]", err);
       return {

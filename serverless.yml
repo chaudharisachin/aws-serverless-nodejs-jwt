@@ -3,6 +3,11 @@ service: api-jwt-auth-sample
 custom:
   JWT_SECRET: ${file(./secrets.json):jwtSecret}
   tableName: 'users-table-${self:provider.stage}'
+  # so that it locally creates our tables defined in the resources block (required when running dynamo locally)
+  dynamodb:
+    start:
+      migrate: true
+
 
 provider:
   name: aws
@@ -104,4 +109,5 @@ resources:
         StatusCode: '401'
 
 plugins:
+  - serverless-dynamodb-local
   - serverless-offline

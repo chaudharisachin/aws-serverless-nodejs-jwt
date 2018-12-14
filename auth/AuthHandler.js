@@ -154,7 +154,7 @@ function register(eventBody) {
 
 function login(eventBody) {
   let emailHash = md5(eventBody.email);
-  return database.getUserById(emailHash)
+  return database.getUserById(emailHash, true)
     .then(user =>
       !user
         ? Promise.reject(new Error('User with that email does not exits.'))

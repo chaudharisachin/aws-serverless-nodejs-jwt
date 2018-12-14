@@ -6,19 +6,31 @@ const USERS_TABLE = process.env.USERS_TABLE;
 let isConnected;
 let dynamoDb;
 
+const IS_OFFLINE = process.env.IS_OFFLINE; //The serverless-offline plugin sets an environment variable of IS_OFFLINE to true
+
+/**
+ * Return Promise resolved with DynamoDB connection
+ */
 function connectToDatabase() {
   if (isConnected) {
     console.log('=> using existing database connection');
     return Promise.resolve(); //TODO: do I need to resolve again with value in here ?
   }
   console.log('=> using NEW database connection');
-  // Return new promise
-  dynamoDb = new AWS.DynamoDB.DocumentClient();
+  if (IS_OFFLINE === 'true') {
+    dynamoDb = new AWS.DynamoDB.DocumentClient({
+      region: 'localhost',
+      endpoint: 'http://localhost:8000'
+    })
+    console.log(">> Running DynamoDB OFFLINE:", dynamoDb);
+  } else {
+    dynamoDb = new AWS.DynamoDB.DocumentClient();
+  }
   isConnected = true;
   return Promise.resolve();
 };
 
-module.exports.getUserById = function(id) {
+module.exports.getUserById = function(id, includePassword) {
   return connectToDatabase()
     .then( () => {
       console.log('(db.getUserById) using: ' + id);
@@ -36,7 +48,9 @@ module.exports.getUserById = function(id) {
           }
           if (result.Item) {
             console.log("(db.getUserById) -> user found: ", result.Item);
-            result.Item.password = undefined;
+            if (!includePassword) {
+              result.Item.password = undefined;
+            }
             // const {id, firstName, lastName, password, email} = result.Item;
             resolve(result.Item);
           } else {
