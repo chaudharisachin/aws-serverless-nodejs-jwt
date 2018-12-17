@@ -3,6 +3,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs-then');
 var md5 = require('md5');
 
+var EMAIL_API_KEY =  process.env.EMAIL_API_KEY;
+var EMAIL_API_DOMAIN = process.env.EMAIL_API_DOMAIN;
+
+var mailgun = require('mailgun-js')({apiKey: EMAIL_API_KEY, domain: EMAIL_API_DOMAIN});
+
 /*
  * Functions
  */
@@ -145,10 +150,25 @@ function register(eventBody) {
         id: emailHash,
         firstName: eventBody.firstName,
         lastName: eventBody.lastName,
-        password: passwordHash
+        password: passwordHash,
+        email: eventBody.email
       })
-      .then(user => ({token: signToken(user.id), auth: true})
-      )
+      .then(user => {
+        //send email for account validation
+        var data = {
+          from: 'Florin <florin@flado.co>',
+          to: eventBody.email,
+          subject: 'Awareness account validation',
+          text: 'Testing some Mailgun awesomeness! Click on the link to validate account: '
+        };
+        console.log('(register) about to send email: ', data);
+        return mailgun.messages()
+          .send(data)
+          .then(sendResponse => {
+            console.log('(register) validation email sendResponse: ', sendResponse);
+            return Promise.resolve({token: signToken(user.id),auth: true});
+          });
+      })
     )
 }
 

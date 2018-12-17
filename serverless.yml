@@ -2,6 +2,8 @@ service: api-jwt-auth-sample
 
 custom:
   JWT_SECRET: ${file(./secrets.json):jwtSecret}
+  EMAIL_API_KEY: ${file(./secrets.json):mailgun.apiKey}
+  EMAIL_API_DOMAIN: ${file(./secrets.json):mailgun.apiDomain}
   tableName: 'users-table-${self:provider.stage}'
   # so that it locally creates our tables defined in the resources block (required when running dynamo locally)
   dynamodb:
@@ -31,6 +33,8 @@ provider:
   environment:
     JWT_SECRET: ${self:custom.JWT_SECRET}
     USERS_TABLE: ${self:custom.tableName}
+    EMAIL_API_KEY: ${self:custom.EMAIL_API_KEY}
+    EMAIL_API_DOMAIN: ${self:custom.EMAIL_API_DOMAIN}
 
 functions:
   verify-token:

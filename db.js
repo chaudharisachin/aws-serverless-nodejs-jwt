@@ -72,7 +72,9 @@ module.exports.createUser = function(user) {
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
-          password: user.password
+          password: user.password,
+          email: user.email,
+          verified: false
         }
       }
       return new Promise(function(resolve, reject) {
@@ -89,3 +91,28 @@ module.exports.createUser = function(user) {
       });
     })
 }
+/**
+ * Mailgun flow when adding Authorized recipients on the account :
+ *
+GET:
+http://email.mailgun.net/c/eJxtjcFqxDAMRL8mOQZLsWL74MOy2ZwK_QbZljeG3SRs3EL_vi60t6I5DDMPTfJg-uJRgQUErUw7GGCwNC-W7BVwntV1uXVaPbk87h_bsEntV-_GCJwyuSkZA4kEQlDBoNKcQcHUP_xa63F246XDpYmPY_h7EfdnS6qctWz35l4Sy1Fkq-cPmPa4Filt8ovXff-lOdbyyVWadaBFIiZGwGBSzto5EZpGQ4Gisg0hxshTypB1sEETBMwjKd2q5e0yv_cv_9_ON7qJUUY
+
+OPEN URL:
+https://app.mailgun.com/testing/recipients/adochiei@yahoo.com/activate/914eec2da212b7dff499ee56375b5c08/5a2ca6df1f4b8b451b2f3504/FLADO
+
+Confirm
+Are you sure you would like to receive emails on adochiei@yahoo.com from Mailgun account "FLADO"
+
+YES:
+ POST https://app.mailgun.com/testing/recipients/add
+ csrf_token: bd8fbf91f2ca1f55b0aaaec78c7209d80f7bce6f
+ email: adochiei@yahoo.com
+ token: 914eec2da212b7dff499ee56375b5c08
+ account_id: 5a2ca6df1f4b8b451b2f3504
+ account_name: FLADO
+ submit: Yes
+
+ 200 Response HTML:
+  Success
+Recipient activated. adochiei@yahoo.com can start receiving emails from "FLADO"
+ */
