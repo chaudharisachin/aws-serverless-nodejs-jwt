@@ -4,6 +4,7 @@ custom:
   JWT_SECRET: ${file(./secrets.json):jwtSecret}
   EMAIL_API_KEY: ${file(./secrets.json):mailgun.apiKey}
   EMAIL_API_DOMAIN: ${file(./secrets.json):mailgun.apiDomain}
+  API_HOST: ${file(./secrets.json):apiHost}
   tableName: 'users-table-${self:provider.stage}'
   # so that it locally creates our tables defined in the resources block (required when running dynamo locally)
   dynamodb:
@@ -35,6 +36,8 @@ provider:
     USERS_TABLE: ${self:custom.tableName}
     EMAIL_API_KEY: ${self:custom.EMAIL_API_KEY}
     EMAIL_API_DOMAIN: ${self:custom.EMAIL_API_DOMAIN}
+    API_HOST: ${self:custom.API_HOST}
+    API_STAGE: ${self:provider.stage}
 
 functions:
   verify-token:
@@ -54,6 +57,15 @@ functions:
           path: register
           method: post
           cors: true
+
+  activate-account:
+    handler: auth/AuthHandler.activate
+    events:
+      - http:
+          path: activate/{id}
+          method: get
+          cors: true
+
   me:
     handler: auth/AuthHandler.me
     events:

@@ -9,12 +9,13 @@
   "keywords": [],
   "description": "example using APiGateway / Lambdas / JWT in nodejs",
   "dependencies": {
+    "aws-sdk": "^2.372.0",
+    "base64url": "^3.0.1",
     "bcryptjs": "^2.4.3",
     "bcryptjs-then": "^1.0.1",
     "jsonwebtoken": "^8.2.1",
-    "aws-sdk": "^2.372.0",
-    "md5": "^2.2.1",
-    "mailgun-js": "^0.22.0"
+    "mailgun-js": "^0.22.0",
+    "md5": "^2.2.1"
   },
   "devDependencies": {
     "serverless-dynamodb-local": "^0.2.35",

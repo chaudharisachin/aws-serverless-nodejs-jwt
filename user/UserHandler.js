@@ -24,6 +24,7 @@ module.exports.getUser = (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   return database.getUserById(event.pathParameters.id)
     .then(user =>
+      //TODO: remove unwanted properties (eg. verifyToken)
       !user ? ({statusCode: 404}) : ({statusCode: 200, body: JSON.stringify(user)})
     )
     .catch(err => {
